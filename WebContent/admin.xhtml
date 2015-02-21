@@ -45,7 +45,7 @@
 
 			<p:column>
 				<f:facet name="header">User Type</f:facet>
-				<p:outputLabel value="#{user.userTypeId}" />
+				<p:outputLabel value="#{adminBean.getStringType(user.userTypeId)}" />
 			</p:column>
 		</p:dataTable>
 
@@ -56,18 +56,30 @@
 			modal="true">
 			<h:panelGrid columns="2" cellpadding="5">
 				<p:outputLabel value="Username" for="userNameDlg" />
-				<p:inputText id="userNameDlg" />
+				<p:inputText id="userNameDlg" value="#{adminBean.username}" />
 
 				<p:outputLabel value="Password" for="pwdDlg" />
-				<p:inputText id="pwdDlg" />
+				<p:inputText id="pwdDlg" value="#{adminBean.password}" />
 
-				<p:outputLabel value="User Type" />
-                
+				<p:outputLabel value="User Type" for="utypeDlg" />
+				<p:selectOneMenu id="utypeDlg" value="#{adminBean.userType}">
+					<f:selectItems value="#{adminBean.userTypes}" var="type"
+						itemValue="#{type.id}" itemLabel="#{type.typeName}" />
+				</p:selectOneMenu>
 			</h:panelGrid>
+			
 			<f:facet name="footer">
-				<p:commandButton value="OK" />
+				<p:commandButton value="OK" onclick="PF('addUserDlg').hide();" action="#{adminBean.insertUser}" ajax="false" />
+				<p:commandButton value="Cancel" onclick="PF('addUserDlg').hide();" />
 			</f:facet>
 		</p:dialog>
+	</h:form>
+	
+	<h:form rendered="#{adminBean.displayTypes}">
+		<p:dataTable style="margin: 20px">
+		</p:dataTable>
+
+		<p:commandButton value="Add Type" style="margin-left: 20px"/>
 	</h:form>
 </h:body>
 </html>

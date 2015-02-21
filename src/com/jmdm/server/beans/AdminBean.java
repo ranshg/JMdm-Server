@@ -1,6 +1,7 @@
 package com.jmdm.server.beans;
 
 import static com.jmdm.server.Tables.USERS;
+import static com.jmdm.server.Tables.USER_TYPES;
 
 import java.sql.Connection;
 
@@ -12,22 +13,31 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.primefaces.context.RequestContext;
 
+import com.jmdm.server.tables.records.UserTypesRecord;
 import com.jmdm.server.tables.records.UsersRecord;
 
 @ManagedBean
 @SessionScoped
 public class AdminBean {
 
+	UsersRecord[] users = null;
+	private boolean usersUpdated = false;
+	UserTypesRecord[] userTypes = null;
+	private boolean userTypesUpdated = false;
 	private boolean displayUsers = true;
 	private boolean displayTypes = false;
+	private String username = null;
+	private String password = null;
+	private int userType = 0;
 	
 	public String logout() {
 		System.out.println("in logout()");
 		return "index?faces-redirect=true";
 	}
 	
-	public UsersRecord[] getUsers() {
-		UsersRecord[] users = null;
+	public UsersRecord[] fetchUsers() {
+		System.out.println("in fetchUsers()");
+		users = null;
 		Connection conn = null;
 		try {
 			conn = LoginBean.getDbConnection();
@@ -42,8 +52,102 @@ public class AdminBean {
 		} finally {
 			LoginBean.closeConnection(conn);
 		}
+		usersUpdated = false;
+		return users;
+	}
+	
+	public UsersRecord[] getUsers() {
+		System.out.println("in getUsers()");
+		if (users == null || usersUpdated) {
+			return fetchUsers();
+		}
 		
 		return users;
+	}
+	
+	public UserTypesRecord[] fetchUserTypes() {
+		System.out.println("in fetchUserTypes()");
+		userTypes = null;
+		Connection conn = null;
+		try {
+			conn = LoginBean.getDbConnection();
+			
+			DSLContext context = DSL.using(conn, SQLDialect.SQLITE);
+			userTypes = context.selectFrom(USER_TYPES)
+					.fetch()
+					.toArray(new UserTypesRecord[0]);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			LoginBean.closeConnection(conn);
+		}
+		userTypesUpdated = false;
+		return userTypes;
+	}
+	
+	public UserTypesRecord[] getUserTypes() {
+		System.out.println("in getUserTypes()");
+		if (userTypes == null || userTypesUpdated) {
+			return fetchUserTypes();
+		}
+		
+		return userTypes;
+	}
+
+	public String getStringType(int typeId) {
+		userTypes = getUserTypes();
+		for (UserTypesRecord userType : userTypes) {
+			if (userType.getId() == typeId) {
+				return userType.getTypeName();
+			}
+		}
+		return null;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+	
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
+	public int getUserType() {
+		return userType;
+	}
+	
+	public void setUserType(int userType) {
+		this.userType = userType;
+	}
+	
+	public String insertUser() {
+		Connection conn = null;
+		try {
+			conn = LoginBean.getDbConnection();
+			
+			DSLContext context = DSL.using(conn, SQLDialect.SQLITE);
+			UsersRecord user = context.newRecord(USERS);
+			user.setUsername(username);
+			user.setPassword(password);
+			user.setCompany("");
+			user.setUserTypeId(userType);
+			user.store();
+			usersUpdated = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			LoginBean.closeConnection(conn);
+		}
+		
+		return "admin";
 	}
 	
 	public String showUsers() {
@@ -63,6 +167,10 @@ public class AdminBean {
 	public boolean getDisplayUsers() {
 		System.out.println("in getDisplayUsers(), displayUsers = " + displayUsers);
 		return displayUsers;
+	}
+	
+	public boolean getDisplayTypes() {
+		return displayTypes;
 	}
 	
 	public String addUser() {

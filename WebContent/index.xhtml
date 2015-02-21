@@ -5,7 +5,7 @@
       xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Title here</title>
+	<title>Welcome to Trial MDM</title>
 </h:head>
 
 <h:body>
@@ -29,7 +29,7 @@
                 </h:panelGrid>
             </p:tab>
 
-            <p:tab title="MDM">
+            <p:tab title="Phone">
                 <h:panelGrid columns="2">
                     <h:graphicImage library="default" name="images/phone.png"
                         width="200" height="200" style="margin: 100px" />
@@ -40,6 +40,9 @@
 
                         <h:outputLabel value="Password" for="mdmpassword" />
                         <h:inputSecret id="mdmpassword" />
+
+                        <p:commandButton value="Login" 
+                            style="margin: 50px" />
                     </h:panelGrid>
                 </h:panelGrid>
             </p:tab>
@@ -55,6 +58,9 @@
 
                         <h:outputLabel value="Password" for="storepassword" />
                         <h:inputSecret id="storepassword" />
+
+                        <p:commandButton value="Login" 
+                            style="margin: 50px" />
                     </h:panelGrid>
                 </h:panelGrid>
             </p:tab>
