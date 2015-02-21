@@ -1,4 +1,4 @@
-package com.jmdm.server;
+package com.jmdm.server.beans;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -33,7 +33,7 @@ public class LoginBean {
 		this.password = password;
 	}
 	
-	public Connection getDbConnection() {
+	public static Connection getDbConnection() {
 		System.out.println("in getDbConnection()");
 		Connection conn = null;
 		try {
@@ -45,26 +45,37 @@ public class LoginBean {
 		}
 		return conn;
 	}
-	
+
+	public static void closeConnection(Connection conn) {
+		try {
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public String login() {
 		System.out.println("in login()");
 		if (username == null || password == null) {
 			return "index";
 		}
 		
+		Connection conn = null;
 		try {
-			Connection conn = getDbConnection();
+			conn = getDbConnection();
 			Statement stat = conn.createStatement();
 			ResultSet rs = stat.executeQuery("select * from users");
 			while (rs.next()) {
 				String name = rs.getString("username");
 				String pwd = rs.getString("password");
 				if (username.equals(name) && password.equals(pwd)) {
-					return "admin";
+					return "admin?faces-redirect=true";
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		} finally {
+			closeConnection(conn);
 		}
 		/*if (username.equals("admin") && password.equals("admin")) {
 			return "admin";
