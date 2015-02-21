@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Title here</title>
+	<style>
+  </style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:menubar>
+			<p:menuitem>
+				<h:graphicImage library="default" name="images/logo.png" width="100"
+					height="30" />
+			</p:menuitem>
+
+			<p:menuitem value="Users" action="#{adminBean.showUsers}"
+				ajax="false" />
+
+			<p:menuitem value="Types" action="#{adminBean.showTypes}"
+				ajax="false" />
+
+			<f:facet name="options">
+				<p:commandButton value="Logout" icon="ui-icon-extlink" action="#{adminBean.logout}" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+
+	<h:form rendered="#{adminBean.displayUsers}">
+		<p:dataTable value="#{adminBean.users}" var="user"
+			style="margin: 20px">
+			<p:column>
+				<f:facet name="header">Username</f:facet>
+				<p:outputLabel value="#{user.username}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Password</f:facet>
+				<p:outputLabel value="#{user.password}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">User Type</f:facet>
+				<p:outputLabel value="#{user.userTypeId}" />
+			</p:column>
+		</p:dataTable>
+
+		<p:commandButton value="Add User" action="#{adminBean.addUser}"
+			style="margin-left: 20px" />
+
+		<p:dialog header="Add User" widgetVar="addUserDlg" resizable="false"
+			modal="true">
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel value="Username" for="userNameDlg" />
+				<p:inputText id="userNameDlg" />
+
+				<p:outputLabel value="Password" for="pwdDlg" />
+				<p:inputText id="pwdDlg" />
+
+				<p:outputLabel value="User Type" />
+                
+			</h:panelGrid>
+			<f:facet name="footer">
+				<p:commandButton value="OK" />
+			</f:facet>
+		</p:dialog>
+	</h:form>
+</h:body>
+</html>
