@@ -76,10 +76,35 @@
 	</h:form>
 	
 	<h:form rendered="#{adminBean.displayTypes}">
-		<p:dataTable style="margin: 20px">
+		<p:dataTable value="#{adminBean.userTypes}" var="userType"
+			style="margin: 20px">
+			<p:column>
+				<f:facet name="header">Id</f:facet>
+				<p:outputLabel value="#{userType.id}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">Type Name</f:facet>
+				<p:outputLabel value="#{userType.typeName}" />
+			</p:column>
 		</p:dataTable>
 
-		<p:commandButton value="Add Type" style="margin-left: 20px"/>
+		<p:commandButton value="Add Type" action="#{adminBean.addType}"
+			style="margin-left: 20px" />
+
+		<p:dialog header="Add Type" widgetVar="addTypeDlg" resizable="false"
+			modal="true">
+			<h:panelGrid columns="2" cellpadding="5">
+				<p:outputLabel value="Type Name" for="typeNameDlg" />
+				<p:inputText id="typeNameDlg" value="#{adminBean.typeName}" />
+			</h:panelGrid>
+
+			<f:facet name="footer">
+				<p:commandButton value="OK" onclick="PF('addTypeDlg').hide();"
+					action="#{adminBean.insertType}" ajax="false" />
+				<p:commandButton value="Cancel" onclick="PF('addTypeDlg').hide();" />
+			</f:facet>
+		</p:dialog>
 	</h:form>
 </h:body>
 </html>

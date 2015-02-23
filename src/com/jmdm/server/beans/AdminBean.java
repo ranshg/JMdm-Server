@@ -29,6 +29,7 @@ public class AdminBean {
 	private String username = null;
 	private String password = null;
 	private int userType = 0;
+	private String typeName = null;
 	
 	public String logout() {
 		System.out.println("in logout()");
@@ -128,6 +129,14 @@ public class AdminBean {
 		this.userType = userType;
 	}
 	
+	public String getTypeName() {
+		return typeName;
+	}
+	
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	
 	public String insertUser() {
 		Connection conn = null;
 		try {
@@ -141,6 +150,25 @@ public class AdminBean {
 			user.setUserTypeId(userType);
 			user.store();
 			usersUpdated = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			LoginBean.closeConnection(conn);
+		}
+		
+		return "admin";
+	}
+	
+	public String insertType() {
+		Connection conn = null;
+		try {
+			conn = LoginBean.getDbConnection();
+			
+			DSLContext context = DSL.using(conn, SQLDialect.SQLITE);
+			UserTypesRecord usrTyp = context.newRecord(USER_TYPES);
+			usrTyp.setTypeName(typeName);
+			usrTyp.store();
+			userTypesUpdated = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -176,6 +204,12 @@ public class AdminBean {
 	public String addUser() {
 		System.out.println("in addUser()");
 		RequestContext.getCurrentInstance().execute("addUserDlg.show()");
+		return null;
+	}
+	
+	public String addType() {
+		System.out.println("in addType()");
+		RequestContext.getCurrentInstance().execute("addTypeDlg.show()");
 		return null;
 	}
 }
