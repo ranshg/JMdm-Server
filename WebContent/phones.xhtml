@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Phone Monitoring Page</title>
+	<style>
+</style>
+</h:head>
+
+<h:body>
+	<h:form>
+		<p:menubar>
+			<p:menuitem>
+				<h:graphicImage library="default" name="images/logo.png" width="100"
+					height="30" />
+			</p:menuitem>
+
+			<f:facet name="options">
+				<p:commandButton value="Logout" icon="ui-icon-extlink"
+					action="#{adminBean.logout}" />
+			</f:facet>
+		</p:menubar>
+	</h:form>
+</h:body>
+</html>
