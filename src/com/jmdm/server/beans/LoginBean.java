@@ -1,5 +1,7 @@
 package com.jmdm.server.beans;
 
+import static com.jmdm.server.Tables.USERS;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -9,6 +11,12 @@ import javax.faces.bean.RequestScoped;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.sql.DataSource;
+
+import org.jooq.DSLContext;
+import org.jooq.SQLDialect;
+import org.jooq.impl.DSL;
+
+import com.jmdm.server.tables.records.UsersRecord;
 
 @ManagedBean
 @RequestScoped
@@ -54,32 +62,69 @@ public class LoginBean {
 		}
 	}
 
-	public String login() {
-		System.out.println("in login()");
-		if (username == null || password == null) {
-			return "index";
-		}
-		
+	public UsersRecord[] fetchUsers() {
+		System.out.println("in fetchUsers()");
+		UsersRecord[] users = null;
 		Connection conn = null;
 		try {
 			conn = getDbConnection();
-			Statement stat = conn.createStatement();
-			ResultSet rs = stat.executeQuery("select * from users");
-			while (rs.next()) {
-				String name = rs.getString("username");
-				String pwd = rs.getString("password");
-				if (username.equals(name) && password.equals(pwd)) {
-					return "admin?faces-redirect=true";
-				}
-			}
+			
+			DSLContext context = DSL.using(conn, SQLDialect.SQLITE);
+			users = context.selectFrom(USERS)
+					.orderBy(USERS.USERNAME)
+					.fetch()
+					.toArray(new UsersRecord[0]);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			closeConnection(conn);
 		}
-		/*if (username.equals("admin") && password.equals("admin")) {
-			return "admin";
-		}*/
+		return users;
+	}
+
+	private boolean canLogin(UsersRecord user, int n) {
+		if (!user.getUsername().equals(username) ||
+				!user.getPassword().equals(password)) {
+			return false; // illegal username or password
+		}
+		
+		switch (n) {
+		case 1:
+			if (user.getUserTypeId() == 1) {
+				return true;
+			}
+			
+		case 2:
+			if (user.getUserTypeId() == 1 || user.getUserTypeId() == 2) {
+				return true;
+			}
+			
+		case 3:
+			if (user.getUserTypeId() == 1 || user.getUserTypeId() == 3) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public String login(int n) {
+		System.out.println("in login()");
+		if (username == null || password == null) {
+			return "index";
+		}
+		
+		UsersRecord[] users = fetchUsers();
+		for (UsersRecord user : users) {
+			if (canLogin(user, n)) {
+				switch (n) {
+				case 1:
+					return "admin?faces-redirect=true";
+				
+				case 2:
+					return "phones?faces-redirect=true";
+				}
+			}
+		}
 		
 		return "index";
 	}
