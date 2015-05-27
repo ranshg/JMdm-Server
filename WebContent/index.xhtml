@@ -36,10 +36,10 @@
 
 					<h:panelGrid columns="2">
 						<h:outputLabel value="Username" for="mdmusername" />
-						<h:inputText id="mdmusername" value="#{loginBean.username}" />
+						<h:inputText id="mdmusername" value="#{loginBean.musername}" />
 
 						<h:outputLabel value="Password" for="mdmpassword" />
-						<h:inputSecret id="mdmpassword" value="#{loginBean.password}" />
+						<h:inputSecret id="mdmpassword" value="#{loginBean.mpassword}" />
 
 						<p:commandButton value="Login" action="#{loginBean.login(2)}"
 							style="margin: 50px" />

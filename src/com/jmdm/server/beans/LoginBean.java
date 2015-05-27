@@ -16,6 +16,9 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
+import sun.font.CreatedFontTracker;
+
+import com.jmdm.server.dto.UserCreds;
 import com.jmdm.server.tables.records.UsersRecord;
 
 @ManagedBean
@@ -24,6 +27,8 @@ public class LoginBean {
 
 	private String username;
 	private String password;
+	private String musername;
+	private String mpassword;
 	
 	public String getUsername() {
 		return username;
@@ -32,6 +37,14 @@ public class LoginBean {
 	public void setUsername(String username) {
 		this.username = username;
 	}
+
+	public String getMusername() {
+		return musername;
+	}
+	
+	public void setMusername(String musername) {
+		this.musername = musername;
+	}
 	
 	public String getPassword() {
 		return password;
@@ -39,6 +52,14 @@ public class LoginBean {
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getMpassword() {
+		return mpassword;
+	}
+	
+	public void setMpassword(String mpassword) {
+		this.mpassword = mpassword;
 	}
 	
 	public static Connection getDbConnection() {
@@ -82,12 +103,19 @@ public class LoginBean {
 		return users;
 	}
 
-	private boolean canLogin(UsersRecord user, int n) {
-		if (!user.getUsername().equals(username) ||
-				!user.getPassword().equals(password)) {
+	private boolean canLogin(UsersRecord user, UserCreds creds, int n) {
+		System.out.println("in canLogin()");
+		System.out.println("user.getUsername() = " + user.getUsername());
+		System.out.println("user.getPassword() = " + user.getPassword());
+		System.out.println("username = " + creds.getUsername());
+		System.out.println("password = " + creds.getPassword());
+		if (!user.getUsername().equals(creds.getUsername()) ||
+				!user.getPassword().equals(creds.getPassword())) {
+			System.out.println("returning false");
 			return false; // illegal username or password
 		}
 		
+		System.out.println("n = " + n);
 		switch (n) {
 		case 1:
 			if (user.getUserTypeId() == 1) {
@@ -104,18 +132,33 @@ public class LoginBean {
 				return true;
 			}
 		}
+		System.out.println("returning false(2)");
 		return false;
 	}
 	
 	public String login(int n) {
-		System.out.println("in login()");
-		if (username == null || password == null) {
-			return "index";
+		System.out.println("in login(), n = " + n);
+		UsersRecord[] users = fetchUsers();
+		UserCreds creds = null;
+		
+		switch (n) {
+		case 1:
+			if (username == null || password == null) {
+				return "index";
+			}
+			creds = new UserCreds(username, password);
+			break;
+			
+		case 2:
+			if (musername == null || mpassword == null) {
+				return "index";
+			}
+			creds = new UserCreds(musername, mpassword);
+			break;
 		}
 		
-		UsersRecord[] users = fetchUsers();
 		for (UsersRecord user : users) {
-			if (canLogin(user, n)) {
+			if (canLogin(user, creds, n)) {
 				switch (n) {
 				case 1:
 					return "admin?faces-redirect=true";
