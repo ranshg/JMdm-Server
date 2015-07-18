@@ -3,8 +3,6 @@ package com.jmdm.server.beans;
 import static com.jmdm.server.Tables.USERS;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -15,8 +13,6 @@ import javax.sql.DataSource;
 import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
-
-import sun.font.CreatedFontTracker;
 
 import com.jmdm.server.dto.UserCreds;
 import com.jmdm.server.tables.records.UsersRecord;
