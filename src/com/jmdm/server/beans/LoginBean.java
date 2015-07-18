@@ -21,10 +21,19 @@ import com.jmdm.server.tables.records.UsersRecord;
 @RequestScoped
 public class LoginBean {
 
+	private int activeIndex = 0;
 	private String username;
 	private String password;
-	private String musername;
-	private String mpassword;
+//	private String musername;
+//	private String mpassword;
+	
+	public int getActiveIndex() {
+		return activeIndex;
+	}
+	
+	public void setActiveIndex(int activeIndex) {
+		this.activeIndex = activeIndex;
+	}
 	
 	public String getUsername() {
 		return username;
@@ -34,13 +43,13 @@ public class LoginBean {
 		this.username = username;
 	}
 
-	public String getMusername() {
+	/*public String getMusername() {
 		return musername;
 	}
 	
 	public void setMusername(String musername) {
 		this.musername = musername;
-	}
+	}*/
 	
 	public String getPassword() {
 		return password;
@@ -50,13 +59,13 @@ public class LoginBean {
 		this.password = password;
 	}
 
-	public String getMpassword() {
+	/*public String getMpassword() {
 		return mpassword;
 	}
 	
 	public void setMpassword(String mpassword) {
 		this.mpassword = mpassword;
-	}
+	}*/
 	
 	public static Connection getDbConnection() {
 		System.out.println("in getDbConnection()");
@@ -132,24 +141,21 @@ public class LoginBean {
 		return false;
 	}
 	
-	public String login(int n) {
+	public String login() {
+		int n = activeIndex + 1;
+		
 		System.out.println("in login(), n = " + n);
 		UsersRecord[] users = fetchUsers();
 		UserCreds creds = null;
 		
 		switch (n) {
 		case 1:
+		case 2:
+		case 3:
 			if (username == null || password == null) {
 				return "index";
 			}
 			creds = new UserCreds(username, password);
-			break;
-			
-		case 2:
-			if (musername == null || mpassword == null) {
-				return "index";
-			}
-			creds = new UserCreds(musername, mpassword);
 			break;
 		}
 		
@@ -161,6 +167,9 @@ public class LoginBean {
 				
 				case 2:
 					return "phones?faces-redirect=true";
+					
+				case 3:
+					return "store?faces-redirect=true";
 				}
 			}
 		}

@@ -9,61 +9,35 @@
 </h:head>
 
 <h:body>
+
 	<h:form>
-		<p:tabView>
+		<p:tabView activeIndex="#{loginBean.activeIndex}">
 			<p:tab title="Admin">
-				<h:panelGrid columns="2">
-					<h:graphicImage library="default" name="images/admin.png"
-						width="200" height="200" style="margin: 100px" />
-
-					<h:panelGrid columns="2">
-						<h:outputLabel value="Username" for="username" />
-						<h:inputText id="username" value="#{loginBean.username}" />
-
-						<h:outputLabel value="Password" for="password" />
-						<h:inputSecret id="password" value="#{loginBean.password}" />
-
-						<p:commandButton value="Login" action="#{loginBean.login(1)}"
-							style="margin: 50px" />
-					</h:panelGrid>
-				</h:panelGrid>
+				<h:graphicImage library="default" name="images/admin.png"
+					width="200" height="200" style="margin: 20px" />
 			</p:tab>
 
 			<p:tab title="Phone">
-				<h:panelGrid columns="2">
-					<h:graphicImage library="default" name="images/phone.png"
-						width="200" height="200" style="margin: 100px" />
-
-					<h:panelGrid columns="2">
-						<h:outputLabel value="Username" for="mdmusername" />
-						<h:inputText id="mdmusername" value="#{loginBean.musername}" />
-
-						<h:outputLabel value="Password" for="mdmpassword" />
-						<h:inputSecret id="mdmpassword" value="#{loginBean.mpassword}" />
-
-						<p:commandButton value="Login" action="#{loginBean.login(2)}"
-							style="margin: 50px" />
-					</h:panelGrid>
-				</h:panelGrid>
+				<h:graphicImage library="default" name="images/phone.png"
+					width="200" height="200" style="margin: 20px" />
 			</p:tab>
 
 			<p:tab title="Store">
-				<h:panelGrid columns="2">
-					<h:graphicImage library="default" name="images/bag.jpg" width="200"
-						height="200" style="margin: 100px" />
-
-					<h:panelGrid columns="2">
-						<h:outputLabel value="Username" for="storeusername" />
-						<h:inputText id="storeusername" />
-
-						<h:outputLabel value="Password" for="storepassword" />
-						<h:inputSecret id="storepassword" />
-
-						<p:commandButton value="Login" style="margin: 50px" />
-					</h:panelGrid>
-				</h:panelGrid>
+				<h:graphicImage library="default" name="images/bag.jpg" width="200"
+					height="200" style="margin: 20px" />
 			</p:tab>
 		</p:tabView>
+
+		<h:panelGrid columns="2">
+			<h:outputLabel value="Username" for="username" />
+			<h:inputText id="username" value="#{loginBean.username}" />
+
+			<h:outputLabel value="Password" for="password" />
+			<h:inputSecret id="password" value="#{loginBean.password}" />
+
+			<p:commandButton value="Login" action="#{loginBean.login}"
+				style="margin: 10px" />
+		</h:panelGrid>
 	</h:form>
 </h:body>
 </html>
