@@ -1,8 +1,5 @@
 package com.jmdm.server.beans;
 
-import static com.jmdm.server.Tables.USERS;
-import static com.jmdm.server.Tables.USER_TYPES;
-
 import java.sql.Connection;
 
 import javax.faces.bean.ManagedBean;
@@ -13,8 +10,9 @@ import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 import org.primefaces.context.RequestContext;
 
-import com.jmdm.server.tables.records.UserTypesRecord;
-import com.jmdm.server.tables.records.UsersRecord;
+import static com.jmdm.server.entities.Tables.*;
+import com.jmdm.server.entities.tables.records.UserTypesRecord;
+import com.jmdm.server.entities.tables.records.UsersRecord;
 
 @ManagedBean
 @SessionScoped

@@ -1,7 +1,5 @@
 package com.jmdm.server.beans;
 
-import static com.jmdm.server.Tables.USERS;
-
 import java.sql.Connection;
 
 import javax.faces.bean.ManagedBean;
@@ -14,8 +12,9 @@ import org.jooq.DSLContext;
 import org.jooq.SQLDialect;
 import org.jooq.impl.DSL;
 
+import static com.jmdm.server.entities.Tables.USERS;
 import com.jmdm.server.dto.UserCreds;
-import com.jmdm.server.tables.records.UsersRecord;
+import com.jmdm.server.entities.tables.records.UsersRecord;
 
 @ManagedBean
 @RequestScoped
