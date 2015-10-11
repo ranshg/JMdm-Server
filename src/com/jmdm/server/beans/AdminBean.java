@@ -210,4 +210,30 @@ public class AdminBean {
 		RequestContext.getCurrentInstance().execute("addTypeDlg.show()");
 		return null;
 	}
+	
+	public boolean allowDeleteUser(String username) {
+		if (username.equals("admin")) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	public String deleteUser(String username) {
+		System.out.println("in deleteUser(), username = " + username);
+		Connection conn = null;
+		try {
+			conn = LoginBean.getDbConnection();
+
+			DSLContext context = DSL.using(conn, SQLDialect.SQLITE);
+			context.delete(USERS).where(USERS.USERNAME.equal(username)).execute();
+			usersUpdated = true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			LoginBean.closeConnection(conn);
+		}
+		
+		return "admin";
+	}
 }

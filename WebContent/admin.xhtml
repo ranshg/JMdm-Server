@@ -40,6 +40,15 @@
 				<f:facet name="header">User Type</f:facet>
 				<p:outputLabel value="#{adminBean.getStringType(user.userTypeId)}" />
 			</p:column>
+			
+			<p:column>
+				<f:facet name="header">Delete</f:facet>
+				<div align="center">
+					<p:commandButton value="Delete"
+						disabled="#{!adminBean.allowDeleteUser(user.username)}"
+						action="#{adminBean.deleteUser(user.username)}" ajax="false" />
+				</div>
+			</p:column>
 		</p:dataTable>
 
 		<p:commandButton value="Add User" action="#{adminBean.addUser}"
