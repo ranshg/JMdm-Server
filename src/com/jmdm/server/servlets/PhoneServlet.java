@@ -21,5 +21,6 @@ public class PhoneServlet extends HttpServlet {
 		
 		PrintWriter out = resp.getWriter();
 		out.println("Hi");
+		out.println(req.getParameter("id"));
 	}
 }
