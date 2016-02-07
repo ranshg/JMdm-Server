@@ -16,9 +16,19 @@
 	<h:form>
 		<div id='cssmenu'>
 			<ul>
-				<li><a href='#' jsf:action="#{adminBean.logout}">Logout</a></li>
+				<li><a href='#' jsf:action="#{phonesBean.logout}">Logout</a></li>
 			</ul>
 		</div>
+	</h:form>
+	
+	<h:form>
+		<p:dataTable value="#{phonesBean.devices}" var="device"
+			style="margin: 20px">
+			<p:column>
+				<f:facet name="header">IMEI</f:facet>
+				<p:outputLabel value="#{device.imei}" />
+			</p:column>
+		</p:dataTable>
 	</h:form>
 </h:body>
 </html>
